@@ -1,8 +1,6 @@
-%Find the disparity between left and right images
-%imset is either 'train' or 'test'
-%numOfImgs is the number of images you want to run this function on
-%sample run command: disparity1a(3,'train')
-
+%Part 1a: find the disparity between 2 images
+%left_img is the left image gray matrix, i.e run rgb2gray function
+%right_img is the right image gray matrix
 function disparity1a(numOfTestImgs,imset)
     %TEMP CODE FOR TESTING. Using Matlabs test images
     close all;
@@ -26,11 +24,10 @@ function disparity1a(numOfTestImgs,imset)
         %find the disparity between left and right image
         disparityMap = disparity(left_img,right_img,'BlockSize',patch_size,'DisparityRange',disparityRange);
         
-        %save the disparity to .mat file
+        %save the disparity to file 
         fileLocation = sprintf('%s/%s/results/%s_disparity.mat', DATA_DIR_ROAD,imset,imageNums{i});
         save(fileLocation,'disparityMap');
         
-        %display the current disparity map
         figure,imshow(disparityMap,disparityRange);
         title('Test Disparity Map');
         colormap(gca,jet) 
