@@ -1,0 +1,21 @@
+%Part 1a: find the disparity between 2 images
+%left_img is the left image gray matrix, i.e run rgb2gray function
+%right_img is the right image gray matrix
+%function disparity(left_img, right_img)
+    %TEMP CODE FOR TESTING. Using Matlabs test images
+    left_img = rgb2gray(double(imread('scene_left.png'))/255);
+    imshow(left_img)
+    left_img = rgb2gray(double(imread('scene_right.png'))/255);
+    imshow(left_img)
+    disparityRange = [-6 10];
+    disparityMap = disparity(rgb2gray(I1),rgb2gray(I2),'BlockSize',...
+        15,'DisparityRange',disparityRange);
+    figure 
+imshow(disparityMap,disparityRange);
+title('Disparity Map');
+colormap(gca,jet) 
+colorbar
+    %------
+    
+
+%end
