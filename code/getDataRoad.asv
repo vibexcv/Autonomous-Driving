@@ -7,7 +7,7 @@ if nargin < 2
     fprintf('run with: data = getData(imname, imset, whatdata);\n');
     fprintf('where:\n');
     fprintf('   imset: ''train'' or ''test''\n');
-    fprintf('   whatdata: ''list'', ''left'', ''right'', ''calib'', ''disp'', ''gt''\n')
+    fprintf('   whatdata: ''list'', ''left'', ''right'', ''calib'', ''disp''\n')
     fprintf('   ''left-plot'' and ''right-plot'' and ''disp-plot'' will plot the data\n');
     fprintf('if the function doesn''t work, please check if globals.m is correctly set\n');
 end;
@@ -23,7 +23,6 @@ switch whatdata
         fclose(fid);
         data.ids = ids;
     case {'left', 'left-plot', 'right', 'right-plot'}
-        imname = sprintf('um_%s',imname);
         leftright = strrep(whatdata, '-plot', '');
         imfile = fullfile(DATA_DIR_ROAD, imset, leftright, sprintf('%s.png', imname));
         im = imread(imfile);
@@ -34,7 +33,6 @@ switch whatdata
             imshow(im);
         end;
     case {'disp'}   %disparity
-        imname = sprintf('um_%s',imname);
         dispdir = fullfile(DATA_DIR_ROAD, imset, 'results');
         dispfile = fullfile(dispdir, sprintf('%s_disparity.mat', imname));
         if ~exist(dispfile, 'file')
@@ -42,9 +40,8 @@ switch whatdata
         end;
         data.disparity = load(dispfile,'disparityMap');
         
-    case {'calib'}
+    case 'calib'
         % read internal params
-        imname = sprintf('um_%s',imname);
         calib_dir = fullfile(DATA_DIR_ROAD, imset, 'calib');
         [~, ~, calib] = loadCalibration(fullfile(calib_dir, sprintf('%s.txt', imname)));
         [Kl,~,tl] = KRt_from_P(calib.P_rect{3});  % left camera
@@ -57,24 +54,15 @@ switch whatdata
         data.P_left = calib.P_rect{3};
         data.P_right = calib.P_rect{4};
     
-    case {'gt'}
+    case 'gt'
         % get the ground truth
         imname = sprintf('um_road_%s',imname);
-        imdir = fullfile(DATA_DIR_ROAD, imset, 'gt_image_2','road');
-        imfile = fullfile(imdir, sprintf('%s.png', imname));
-        if ~exist(imfile, 'file')
-            fprintf('you dont have the gt file...\n');
+        dispdir = fullfile(DATA_DIR_ROAD, imset, 'gt_image_');
+        dispfile = fullfile(dispdir, sprintf('%s.png', imname));
+        if ~exist(dispfile, 'file')
+            fprintf('you haven''t computed disparity yet...\n');
         end;
-        im = imread(imfile);
-        data.gt = im;
+        data.disparity = load(dispfile,'disparityMap');
     
-    case {'depth'}
-        % get the depth
-        imdir = fullfile(DATA_DIR_ROAD, imset, 'results');
-        imfile = fullfile(imdir, sprintf('%s_depth.mat', imname));
-        if ~exist(imfile, 'file')
-            fprintf('you dont have the gt file...\n');
-        end;
-        data.depth = load(imfile,'depth');
                 
 end;
