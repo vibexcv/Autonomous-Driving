@@ -40,7 +40,7 @@ for i = drange(1:numOfTestImgs)
     cloud_img = cloud_img.Location;
     
     %% 2. Use HOG Features
-    left_img_bin = imbinarize(left_img);
+    %left_img_bin = imbinarize(left_img);
     featureVector = HOGdescriptor(left_imdata.im);
     size(featureVector)
     
@@ -69,49 +69,10 @@ for i = drange(1:numOfTestImgs)
     X = [X; x];
     Y = [Y; y];
     
-    
-
-    
 end
 
 
-    fitcsvm(double(X), double(Y));
+svmmodel = fitcsvm(double(X), double(Y));
 
-
-
-
-% cp = classperf(trainingLabels);
-% countEachLabel(trainingSet)
-% countEachLabel(testSet)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%% 3. Train a Road Classifier
-trainingFeatures = extractHOGFeaturesFromImageSet(trainingSet, hogFeatureSize);
-classifier = svmtrain(trainingFeatures, trainingLabels);
-
-
-
-
-%% Evaluate The Road Classifier
-% Extract HOG features from the test set.
-testFeatures = extractHOGFeaturesFromImageSet(testSet, hogFeatureSize);
-
-% Make class predictions using the test features.
-predictedLabels = svmclassify(classifier, testFeatures);
-
-% Tabulate the results using a confusion matrix.
-confMat = confusionmat(testLabels, predictedLabels);
-
-%% Detect Road
+fileLocation = sprintf('%s/%s/results/model.mat', DATA_DIR_ROAD,imset);
+save(fileLocation,'svmmodel');
