@@ -46,9 +46,16 @@ for i = drange(1:numOfTestImgs)
     
         
     %% generate training data x
+    sprintf('here')
     xim = reshape(left_imdata.im, [image_sy * image_sx image_sz]);
+    size(xim)
+    size(left_imdata.im)
     xcloud = reshape(cloud_img, [image_sy * image_sx 3]);
+    size(cloud_img)
+    size(xcloud)
     xidx = reshape(imidxy, [image_sy * image_sx 1]);
+    size(xidx)
+    size(imidxy)
     
     xdesc = reshape(featureVector,[image_sy*image_sx 9]);
     xim = reshape(left_imdata.im, [image_sy * image_sx image_sz]);
