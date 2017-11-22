@@ -2,10 +2,6 @@
 fileLocation = sprintf('%s/%s/results/model.mat', DATA_DIR_ROAD,'train');
 model = load(fileLocation);
 svmmodel = model.svmmodel;
-data = getDataRoad([], imset, 'list'); ids = data.ids;
-N = 3;
-
-
 
 
 
@@ -55,7 +51,6 @@ for i = drange(1:numOfTestImgs)
 
     testx = [xim xcloud xidx xdesc];
     
-    imname = ids{i}(1:end-4); 
     
     image = left_imdata;
     testim = left_imdata;   
@@ -65,7 +60,6 @@ for i = drange(1:numOfTestImgs)
     py = predict(svmmodel, double(testx));
     %display the predicted outputs
     iy = reshape(py, [size(testim.im,1) size(testim.im,2)]);
-    imshow(testim.im)
-     f = figure('Visible', 'off');imshow(iy)
-    imwrite(iy, strcat('..\data-road\test\results\aa_',imname,'_predroad.png'));
+     figure, imshow(iy);
+    imwrite(iy, strcat('..\data-road\test\results\aa_',imageNums{i},'_predroad.png'));
 end 

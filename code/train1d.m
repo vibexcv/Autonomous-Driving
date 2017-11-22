@@ -8,7 +8,7 @@
 %TEMP CODE FOR TESTING. Using Matlabs test images
 close all;
 globals;
-numOfTestImgs = 3; 
+numOfTestImgs = 15; 
 imset = 'train';
 imgsList = getDataRoad([], imset, 'list'); 
 imageNums = imgsList.ids(1:numOfTestImgs);  %get the images
@@ -19,19 +19,19 @@ X = [];
 Y = [];
 %go through each image 
 for i = drange(1:numOfTestImgs)        
-
+    i
     %get left & gt of current imageid 
     left_imdata = getDataRoad(imageNums{i}, imset, 'left');
     left_img = rgb2gray(double(left_imdata.im)/255);
-    gt_imgdata = getDataRoad(imageNums{i}, imset, 'gt');
-    gt_img = gt_imgdata.gt;
-    imshow(gt_img);
+    %gt_imgdata = getDataRoad(imageNums{i}, imset, 'gt');
+    %gt_img = gt_imgdata.gt;
+    %imshow(gt_img);
     [image_sy, image_sx, image_sz] = size(left_imdata.im); 
     
     %find road and notroad for gt
-    road = zeros(size(gt_img));
-    road(find(gt_img >= 105)) = 1;
-    imshow(road)
+   % road = zeros(size(gt_img));
+   % road(find(gt_img >= 105)) = 1;
+    %imshow(road);
     
     
     %get cloud for image 
@@ -46,22 +46,29 @@ for i = drange(1:numOfTestImgs)
     
         
     %% generate training data x
+    sprintf('here')
     xim = reshape(left_imdata.im, [image_sy * image_sx image_sz]);
+    size(xim)
+    size(left_imdata.im)
     xcloud = reshape(cloud_img, [image_sy * image_sx 3]);
+    size(cloud_img)
+    size(xcloud)
     xidx = reshape(imidxy, [image_sy * image_sx 1]);
+    size(xidx)
+    size(imidxy)
     
     xdesc = reshape(featureVector,[image_sy*image_sx 9]);
     xim = reshape(left_imdata.im, [image_sy * image_sx image_sz]);
     xcloud = reshape(cloud_img, [image_sy * image_sx 3]);
     xidx = reshape(imidxy, [image_sy * image_sx 1]);
 
-    x = [xim xcloud xidx xdesc];
+    x = [xim xcloud xidx];
     
     
     
     
     %% concatenate to global X & Y
-    idx = randperm(image_sy*image_sx,1000);    
+    idx = randperm(image_sy*image_sx,200);    
     x = x(idx,:);
     gt = min((255 - gt_img(:,:,1)) + gt_img(:,:,3),255)/255;
     y = reshape(gt, [image_sy * image_sx 1]);

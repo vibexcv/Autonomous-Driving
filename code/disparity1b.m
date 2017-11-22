@@ -3,7 +3,7 @@
 %numOfImgs is the number of images you want to run this function on
 %sample run command: disparity1a(3,'train')
 
-function disparity1a(numOfTestImgs,imset)
+function disparity1b(numOfTestImgs,imset)
     %TEMP CODE FOR TESTING. Using Matlabs test images
     close all;
     globals;
@@ -16,7 +16,7 @@ function disparity1a(numOfTestImgs,imset)
 
     %go through each image and find, show &save depth
     for i = drange(1:numOfTestImgs)        
-        
+            
         %get left and right of current imageid 
         left_imdata = getDataRoad(imageNums{i}, imset, 'left');
         left_img = rgb2gray(double(left_imdata.im)/255);

@@ -34,7 +34,7 @@ switch whatdata
             imshow(im);
         end;
     case {'disp'}   %disparity
-        imname = sprintf('um_%s',imname);
+        imname = sprintf('%s',imname);
         dispdir = fullfile(DATA_DIR_ROAD, imset, 'results');
         dispfile = fullfile(dispdir, sprintf('%s_disparity.mat', imname));
         if ~exist(dispfile, 'file')
