@@ -76,5 +76,13 @@ switch whatdata
             fprintf('you dont have the gt file...\n');
         end;
         data.depth = load(imfile,'depth');
+    case {'model'}
+        % get the model
+        fileLocation = sprintf('%s/%s/model.mat', DATA_DIR_ROAD,imset);
+        if ~exist(fileLocation, 'file')
+            fprintf('you dont have the model file...\n');
+        end;
+        model = load(fileLocation,'svmmodel');
+        data.svmmodel = model.svmmodel;
                 
 end;
