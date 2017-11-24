@@ -100,7 +100,7 @@ switch whatdata
            data.im = imgdata.im;
         end;
     case {'detector-car'}
-        cls = strrep(whatdata, 'detector-', '');
+         cls = strrep(whatdata, 'detector-', '');
          data = load(fullfile(DETECTOR_DIR, sprintf('%s_final.mat', cls)));
     case {'superpixels'}
         dispdir = fullfile(DATA_DIR_CAR, imset, 'results');
