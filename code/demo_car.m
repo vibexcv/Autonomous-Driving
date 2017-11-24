@@ -1,5 +1,5 @@
-addpath('dpm-osx')
-%addpath('dpm-windows') ;
+%addpath('dpm-osx')
+addpath('dpm-windows') ;
 addpath('devkit') ;
 
 data = getDataCar([], [], 'detector-car');
