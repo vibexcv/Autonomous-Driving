@@ -1,4 +1,4 @@
-addpath('dpm-osx')
+%addpath('dpm-osx')
 data = getDataCar([], [], 'detector-car');
 model = data.model;
 col = 'r';
