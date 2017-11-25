@@ -2,8 +2,8 @@ addpath(genpath('dpm-windows'));
  
 
 %% ROAD Detection 
-numOfTrainImgs = 3; 
-numOfTestImgs = 1;
+numOfTrainImgs = 94; 
+numOfTestImgs = 10;
 imsetTest = 'test';
 imsetTrain = 'test';
 numOfRandom = 300;  %number of random superpixels from each image
