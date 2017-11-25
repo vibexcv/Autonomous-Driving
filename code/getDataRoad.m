@@ -33,14 +33,30 @@ switch whatdata
             subplot('position', [0,0,1,1]);
             imshow(im);
         end;
-    case {'disp'}   %disparity
-        imname = sprintf('%s',imname);
+%     case {'disp'}   %disparity
+%         imname = sprintf('%s',imname);
+%         dispdir = fullfile(DATA_DIR_ROAD, imset, 'results');
+%         dispfile = fullfile(dispdir, sprintf('%s_disparity.mat', imname));
+%         if ~exist(dispfile, 'file')
+%             fprintf('you haven''t computed disparity yet...\n');
+%         end;
+%         data.disparity = load(dispfile,'disparityMap');
+case {'disp', 'disp-plot'}
         dispdir = fullfile(DATA_DIR_ROAD, imset, 'results');
-        dispfile = fullfile(dispdir, sprintf('%s_disparity.mat', imname));
+        dispfile = fullfile(dispdir, sprintf('%s_left_disparity.png', imname)); 
         if ~exist(dispfile, 'file')
             fprintf('you haven''t computed disparity yet...\n');
+        else
+            disparity = imread(dispfile);
+            disparity = double(disparity)/256;
         end;
-        data.disparity = load(dispfile,'disparityMap');
+        data.disparity = disparity;
+        if strcmp(whatdata, 'disp-plot')
+            figure('position', [100,100,size(disparity,2)*0.7,size(disparity,1)*0.7]);
+            subplot('position', [0,0,1,1]);
+            imagesc(disparity);
+            axis equal;
+        end;
         
     case {'calib'}
         % read internal params

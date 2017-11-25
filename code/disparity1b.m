@@ -11,7 +11,7 @@ function disparity1b(numOfTestImgs,imset)
     %imset = 'test'
     imgsList = getDataRoad([], imset, 'list'); 
     imageNums = imgsList.ids(1:numOfTestImgs);  %get the images
-    disparityRange = [-6 10];   %parameter for matlab disparity function
+    disparityRange = [0 16*15];   %parameter for matlab disparity function
     patch_size = 15;    %parameter for matlab disparity function
 
     %go through each image and find, show &save depth
@@ -19,22 +19,20 @@ function disparity1b(numOfTestImgs,imset)
             
         %get left and right of current imageid 
         left_imdata = getDataRoad(imageNums{i}, imset, 'left');
-        left_img = rgb2gray(double(left_imdata.im)/255);
+        left_img = rgb2gray(left_imdata.im);
         right_imdata = getDataRoad(imageNums{i}, imset, 'right');
-        right_img = rgb2gray(double(right_imdata.im)/255);
+        right_img = rgb2gray(right_imdata.im);
 
         %find the disparity between left and right image
-        disparityMap = disparity(left_img,right_img,'BlockSize',patch_size,'DisparityRange',disparityRange);
-        
-        %save the disparity to .mat file
-        fileLocation = sprintf('%s/%s/results/%s_disparity.mat', DATA_DIR_ROAD,imset,imageNums{i});
-        save(fileLocation,'disparityMap');
+        disparityMap = disparity(left_img,right_img,'BlockSize',15,'DisparityRange',disparityRange)/disparityRange(2);
+
+        %save the disparity to .png file
+        imwrite(disparityMap,strcat('../data-road/',imset,'/results/',imageNums{i},'_left_disparity.png'));
         
         %display the current disparity map
-        figure,imshow(disparityMap,disparityRange);
+        figure,imshow(disparityMap);
         title('Test Disparity Map');
-        colormap(gca,jet) 
-        colorbar
+
         
     end
     
