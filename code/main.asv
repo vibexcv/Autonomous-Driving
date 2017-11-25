@@ -1,0 +1,19 @@
+addpath(genpath('dpm'));
+ 
+
+%% ROAD Detection 
+numOfTestImgs = 3; 
+imset = 'test';
+
+%Get the disparity
+
+
+
+%% Car detection 
+%  detect cars in n images and save as ds
+q2b(20);
+ 
+%  train a classifier
+
+
+%  plot arrows
