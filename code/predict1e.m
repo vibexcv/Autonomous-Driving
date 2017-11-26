@@ -89,7 +89,9 @@ for i = drange(1:numOfTestImgs)
 
 
      %%convert back to image 
-        %predicted_image = zeros(m, n, 3);    % All superpixels that belong to road.
+                 [m,n] = size(L);
+
+        predicted_image_black = zeros(m, n);    % All superpixels that belong to road.
         predicted_image = left_imdata.im;
 
     %     % find all superpixels that belong to road.
@@ -104,13 +106,13 @@ for i = drange(1:numOfTestImgs)
     %     end
 
         % set all pixels of road to green
-            [m,n] = size(L);
 
         for x = 1:n
             for y = 1:m
                 spIdx = L(y,x);
                 if prediction(spIdx) == 1   %if this pixel is predicted to be a road
                     predicted_image(y,x,:) = [0 255 0]; %set color to be green
+                    predicted_image_black(y,x) = 1;
                 end
             end
         end
@@ -120,9 +122,10 @@ for i = drange(1:numOfTestImgs)
 
         figure,
         imshow(predicted_image);
-             BW = boundarymask(L);
-         imshow(imoverlay(predicted_image,BW,'cyan'))
+        BW = boundarymask(L);
+        imshow(imoverlay(predicted_image,BW,'cyan'))
         imwrite(predicted_image, strcat('..\data-road\test\results\',imageNums{i},'_prediction.png'));
+        imwrite(predicted_image_black, strcat('..\data-road\test\results\',imageNums{i},'_gt_prediction.png'));
 
 
     end 

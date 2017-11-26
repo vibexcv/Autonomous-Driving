@@ -1,8 +1,0 @@
- addpath(genpath('dpm'));
- 
-%  detect cars in n images and save as ds
- q2b(2);
- 
-%  train a classifier
-q2
-%  plot arrows

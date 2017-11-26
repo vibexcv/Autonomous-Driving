@@ -1,10 +1,16 @@
 function [ptc, ptc_rs] = findCloud(imname, imset)
+findDisparity(imname, imset);
 
 % get the depth
 calib = getDataRoad(imname, imset, 'calib');
 data = getDataRoad(imname, imset, 'left');
+disp = getDataRoad(imname, imset, 'disp');
 depth = getDataRoad(imname, imset, 'depth');  %get the saved depth from depth1c.m
 depth = depth.depth.depth;
+
+%compute depth using (f*B)/dif = calib.f*10;
+depth = calib.f * calib.baseline ./ disp.disparity; 
+depth = min(depth, 4000);
 
 [Y, X] = size(depth);
 
