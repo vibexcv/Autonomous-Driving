@@ -2,7 +2,7 @@ addpath(genpath('dpm-windows'));
  
 
 %% ROAD Detection 
-numOfTrainImgs = 10; 
+numOfTrainImgs = 50; 
 numOfTestImgs = 10;
 imsetTest = 'train';
 imsetTrain = 'test';
