@@ -1,4 +1,4 @@
-function data = getData(imname, imset, whatdata)
+function data = getDataRoad(imname, imset, whatdata)
 
 % example to run: data = getData('000120', 'train', 'left');
 % to load a detector, e.g.: data = getData([],[],'detector-car');
@@ -100,5 +100,22 @@ case {'disp', 'disp-plot'}
         end;
         model = load(fileLocation,'svmmodel');
         data.svmmodel = model.svmmodel;
+        
+    case {'test-gt'}
+        gtdir = fullfile(DATA_DIR_ROAD, imset, 'results');
+        gtfile = fullfile(gtdir, sprintf('%s_gt_prediction.png', imname)); 
+        if ~exist(gtfile, 'file')
+            fprintf('you haven''t computed gt yet...\n');
+        else
+            gt = imread(gtfile);
+            gt = double(gt)/256;
+        end;
+        data.testgt = gt;
+        if strcmp(whatdata, 'disp-plot')
+            figure('position', [100,100,size(gt,2)*0.7,size(gt,1)*0.7]);
+            subplot('position', [0,0,1,1]);
+            imagesc(gt);
+            axis equal;
+        end;
                 
 end;

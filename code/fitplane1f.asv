@@ -1,0 +1,12 @@
+%fitplane 1f
+
+%get predicted gt for image and the image point cloud
+        left_imdata = getDataRoad(imageNums{i}, imset, 'left');
+        left_img = rgb2gray(double(left_imdata.im)/255);
+
+
+%get the incecids where gt == 1 
+
+%get croped point cloud using select
+
+%then use pcfitplane
