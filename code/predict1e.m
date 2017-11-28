@@ -1,11 +1,11 @@
 %1e predict images predict on test set
-function predict1e(numOfTestImgs)
+function score = predict1e(numOfTestImgs)
 %Set Parameters
 close all;
 globals;
 %numOfTestImgs = 10; 
 numOfFeatures = 9;
-imset = 'test'; 
+imset = 'train'; 
 
 %get the image ids & model
 imgsList = getDataRoad([], imset, 'list'); 
@@ -16,11 +16,12 @@ svmmodel = model.svmmodel; % get the svmmodel
 
 %go through each image 
 for i = drange(1:numOfTestImgs)        
-
+        tic; 
         %get left & gt of current imageid 
         left_imdata = getDataRoad(imageNums{i}, imset, 'left');
         left_img = rgb2gray(double(left_imdata.im)/255);
-
+        gt_imgdata = getDataRoad(imageNums{i}, imset, 'gt');
+        gt_img = rgb2gray(gt_imgdata.gt);
 
         % Find superpixels of trainingImg
         [L,N] = superpixels(left_img, 500);
@@ -28,6 +29,27 @@ for i = drange(1:numOfTestImgs)
         %BW = boundarymask(L);
         %imshow(imoverlay(left_img,BW,'cyan'))
 
+        
+        
+        spLabel = zeros(N, 1);    % All superpixels that belong to road.
+        [m,n] = size(L);
+
+        % find all superpixels that belong to road.
+        for x = 1:n
+            for y = 1:m
+                % Check if this coordinate can be labeled as 'road'
+                % by looking at its gt value(red).
+                spIdx = L(y,x);
+                if gt_img(y,x) == 105 % This is a 'road' pixel -> SP at (x,y) belongs to road
+                    spLabel(spIdx) = 1;
+                end
+            end
+        end
+        
+        
+        
+        
+        
         %% Compute the Features 
         % All superpixels features    
         spFeatures = zeros(N, numOfFeatures); 
@@ -86,7 +108,7 @@ for i = drange(1:numOfTestImgs)
 
         [prediction,score]= predict(svmmodel, double(spFeatures));
 
-
+score
 
      %%convert back to image 
                  [m,n] = size(L);
@@ -126,7 +148,14 @@ for i = drange(1:numOfTestImgs)
         imshow(imoverlay(predicted_image,BW,'cyan'))
         imwrite(predicted_image, strcat('..\data-road\test\results\',imageNums{i},'_prediction.png'));
         imwrite(predicted_image_black, strcat('..\data-road\test\results\',imageNums{i},'_gt_prediction.png'));
-
+        e = toc;
+        fprintf('finished predicting! (took: %0.4f seconds)\n', e);
+        
+        
+        %Get the Precision Recall Curve
+        prec_rec(score(:,2), spLabel);
+        
+        
 
     end 
 end

@@ -1,4 +1,4 @@
-%Find the depth of the images
+'%Find the depth of the images
 %imset is either 'train' or 'test'
 %numOfImgs is the number ofe images you want to run this function on
 %sample run command: depth1c(3,'train')
