@@ -14,7 +14,7 @@ calib = getDataRoad(imname, imset, 'calib');
 %get the indexs where gt == 1 
 [road_y,road_x] = find(test_gt > 0);
 
-%get crooped point cloud using select
+%get cropped point cloud using select
 ptCloudOutData = select(cloud_img,road_y,road_x);
 ptCloudOut = ptCloudOutData.Location;
 figure, pcshow(ptCloudOut);
@@ -35,6 +35,8 @@ pcshow(inliers_road)
 hold off;
 
 
-corners4_road3d = drawPlane(inliers_road.Location, plane_road.Parameters); 
-corners4_road2d = proj2photo(calib,corners4_road3d);
+drawPlane(inliers_road.Location, plane_road.Parameters); 
+
+
+% corners4_road2d = proj2photo(calib,corners4_road3d);
 

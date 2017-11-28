@@ -2,17 +2,21 @@ addpath(genpath('dpm-windows'));
  
 
 %% ROAD Detection 
-numOfTrainImgs = 50; 
-numOfTestImgs = 10;
+numOfTrainImgs = 20; 
+numOfTestImgs = 20;
 imsetTest = 'train';
 imsetTrain = 'test';
 numOfRandom = 250;  %number of random superpixels from each image
 
 %Get the disparity
 %Trainning 
-disparity1b(numOfTrainImgs,imsetTrain);
-depth1c(numOfTrainImgs,imsetTrain);
-svmmodel = train1d(numOfTrainImgs, numOfRandom);  %gets and save the model in train folder
+% disparity1b(numOfTrainImgs,imsetTrain);
+% depth1c(numOfTrainImgs,imsetTrain);
+% svmmodel = train1d(numOfTrainImgs, numOfRandom);  %gets and save the model in train folder
+
+%Get training Precsion recall curve for the model
+model = getDataRoad([], 'train', 'model'); 
+svmmodel = model.svmmodel; % get the svmmodel
 
 %predict on test images
 tic;
